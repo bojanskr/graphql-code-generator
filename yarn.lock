@@ -9533,7 +9533,24 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-graphql-config@^4.1.0, graphql-config@^4.4.0:
+graphql-config@^4.1.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/graphql-config/-/graphql-config-4.5.0.tgz#257c2338950b8dce295a27f75c5f6c39f8f777b2"
+  integrity sha512-x6D0/cftpLUJ0Ch1e5sj1TZn6Wcxx4oMfmhaG9shM0DKajA9iR+j1z86GSTQ19fShbGvrSSvbIQsHku6aQ6BBw==
+  dependencies:
+    "@graphql-tools/graphql-file-loader" "^7.3.7"
+    "@graphql-tools/json-file-loader" "^7.3.7"
+    "@graphql-tools/load" "^7.5.5"
+    "@graphql-tools/merge" "^8.2.6"
+    "@graphql-tools/url-loader" "^7.9.7"
+    "@graphql-tools/utils" "^9.0.0"
+    cosmiconfig "8.0.0"
+    jiti "1.17.1"
+    minimatch "4.2.3"
+    string-env-interpolation "1.0.1"
+    tslib "^2.4.0"
+
+graphql-config@^4.4.0:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/graphql-config/-/graphql-config-4.4.1.tgz#2b1b5215b38911c0b15ff9b2e878101c984802d6"
   integrity sha512-B8wlvfBHZ5WnI4IiuQZRqql6s+CKz7S+xpUeTb28Z8nRBi8tH9ChEBgT5FnTyE05PUhHlrS2jK9ICJ4YBl9OtQ==
@@ -11464,6 +11481,11 @@ jest@28.1.3:
     import-local "^3.0.2"
     jest-cli "^28.1.3"
 
+jiti@1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.17.1.tgz#264daa43ee89a03e8be28c3d712ccc4eb9f1e8ed"
+  integrity sha512-NZIITw8uZQFuzQimqjUxIrIcEdxYDFIe/0xYfIlVXTkiBjjyBEvgasj5bb0/cHtPRD/NziPbT312sFrkI5ALpw==
+
 joi@^17.7.0:
   version "17.7.1"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.7.1.tgz#854fc85c7fa3cfc47c91124d30bffdbb58e06cec"
@@ -12945,6 +12967,13 @@ minimatch@4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-4.2.1.tgz#40d9d511a46bdc4e563c22c3080cde9c0d8299b4"
   integrity sha512-9Uq1ChtSZO+Mxa/CL1eGizn2vRn3MlLgzhT0Iz8zaY8NdvxvB0d5QdPFmCKf7JKA9Lerx5vRrnwO03jsSfGG9g==
+  dependencies:
+    brace-expansion "^1.1.7"
+
+minimatch@4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-4.2.3.tgz#b4dcece1d674dee104bb0fb833ebb85a78cbbca6"
+  integrity sha512-lIUdtK5hdofgCTu3aT0sOaHsYR37viUuIc0rwnnDXImbwFRcumyLMeZaM0t0I/fgxS6s6JMfu0rLD1Wz9pv1ng==
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -17733,10 +17762,10 @@ webpack-sources@^3.2.3:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@5.75.0, webpack@^5.64.4:
-  version "5.75.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.75.0.tgz#1e440468647b2505860e94c9ff3e44d5b582c152"
-  integrity sha512-piaIaoVJlqMsPtX/+3KTTO6jfvrSYgauFVdt8cr9LTHKmcq/AMd4mhzsiP7ZF/PGRNPGA8336jldh9l2Kt2ogQ==
+webpack@5.76.0, webpack@^5.64.4:
+  version "5.76.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.76.0.tgz#f9fb9fb8c4a7dbdcd0d56a98e56b8a942ee2692c"
+  integrity sha512-l5sOdYBDunyf72HW8dF23rFtWq/7Zgvt/9ftMof71E/yUb1YLOBmTgA2K4vQthB3kotMrSj609txVE0dnr2fjA==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^0.0.51"
