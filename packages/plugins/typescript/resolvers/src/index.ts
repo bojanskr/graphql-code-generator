@@ -5,18 +5,19 @@ import {
   PluginFunction,
   Types,
 } from '@graphql-codegen/plugin-helpers';
-import { parseMapper } from '@graphql-codegen/visitor-plugin-common';
+import { parseMapper, type RootResolver } from '@graphql-codegen/visitor-plugin-common';
 import { GraphQLSchema } from 'graphql';
 import { TypeScriptResolversPluginConfig } from './config.js';
 import { TypeScriptResolversVisitor } from './visitor.js';
 
 const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
-export const plugin: PluginFunction<TypeScriptResolversPluginConfig, Types.ComplexPluginOutput> = (
-  schema: GraphQLSchema,
-  documents: Types.DocumentFile[],
-  config: TypeScriptResolversPluginConfig
-) => {
+export const plugin: PluginFunction<
+  TypeScriptResolversPluginConfig,
+  Types.ComplexPluginOutput<{
+    generatedResolverTypes: RootResolver['generatedResolverTypes'];
+  }>
+> = (schema: GraphQLSchema, documents: Types.DocumentFile[], config: TypeScriptResolversPluginConfig) => {
   const imports = [];
   if (!config.customResolveInfo) {
     imports.push('GraphQLResolveInfo');
@@ -280,6 +281,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
   prepend.push(...mappersImports, ...visitor.globalDeclarations);
 
+  const rootResolver = getRootResolver();
+
   return {
     prepend,
     content: [
@@ -289,9 +292,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
       resolversTypeMapping,
       resolversParentTypeMapping,
       ...visitorResult.definitions.filter(d => typeof d === 'string'),
-      getRootResolver(),
+      rootResolver.content,
       getAllDirectiveResolvers(),
     ].join('\n'),
+    meta: {
+      generatedResolverTypes: rootResolver.generatedResolverTypes,
+    },
   };
 };
 

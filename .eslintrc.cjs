@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@theguild'],
+  extends: ['@theguild', 'plugin:tailwindcss/recommended'],
   rules: {
     'no-empty': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -50,11 +50,25 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
+    {
+      files: ['packages/**/*.{,c,m}ts{,x}'],
+      parserOptions: {
+        project: ['./tsconfig.json'],
+      },
+    },
+    {
+      files: ['scripts/*.{ts,js}', 'prettier.config.cjs', 'jest.config.js', 'jest.project.js'],
+      rules: {
+        '@typescript-eslint/no-require-imports': 'off',
+      },
+    },
   ],
   ignorePatterns: [
     'dev-test',
     'website',
-    'examples/**/gql/**',
+    'examples/**',
+    '**/tests/test-files/**',
+    '**/tests/test-documents/**',
     '**/react-app-env.d.ts',
     'packages/presets/swc-plugin/tests/fixtures/simple-uppercase-operation-name.js',
     'packages/presets/swc-plugin/tests/fixtures/simple-uppercase-operation-name.other-dir.js',

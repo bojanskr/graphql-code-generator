@@ -5,7 +5,7 @@ import { ASTNode, ExecutionResult, Kind, OperationDefinitionNode } from 'graphql
 import useSWR from 'swr';
 
 const executor = buildHTTPExecutor({
-  endpoint: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
+  endpoint: 'https://graphql.org/graphql/',
 });
 
 const isOperationDefinition = (def: ASTNode): def is OperationDefinitionNode => def.kind === Kind.OPERATION_DEFINITION;
@@ -20,7 +20,7 @@ export function useGraphQL<TResult, TVariables>(
       document.definitions.find(isOperationDefinition)?.name,
       variables,
     ] as const,
-    async (_key: string, variables: any) =>
+    async ([_key, variables]: any) =>
       executor({
         document,
         variables,

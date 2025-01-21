@@ -25,7 +25,7 @@ export type ClientPresetConfig = {
    * @exampleMarkdown
    * ```tsx
    * const config = {
-   *    schema: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
+   *    schema: 'https://graphql.org/graphql/',
    *    documents: ['src/**\/*.tsx', '!src\/gql/**\/*'],
    *    generates: {
    *       './src/gql/': {
@@ -49,7 +49,7 @@ export type ClientPresetConfig = {
    * @exampleMarkdown
    * ```tsx
    * const config = {
-   *    schema: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
+   *    schema: 'https://graphql.org/graphql/',
    *    documents: ['src/**\/*.tsx', '!src\/gql/**\/*'],
    *    generates: {
    *       './src/gql/': {
@@ -84,14 +84,16 @@ export type ClientPresetConfig = {
          */
         hashPropertyName?: string;
         /**
-         * @description Algorithm used to generate the hash, could be useful if your server expects something specific (e.g., Apollo Server expects `sha256`).
+         * @description Algorithm or function used to generate the hash, could be useful if your server expects something specific (e.g., Apollo Server expects `sha256`).
+         *
+         * A custom hash function can be provided to generate the hash if the preset algorithms don't fit your use case. The function receives the operation and should return the hash string.
          *
          * The algorithm parameter is typed with known algorithms and as a string rather than a union because it solely depends on Crypto's algorithms supported
          * by the version of OpenSSL on the platform.
          *
          * @default `sha1`
          */
-        hashAlgorithm?: 'sha1' | 'sha256' | (string & {});
+        hashAlgorithm?: 'sha1' | 'sha256' | (string & {}) | ((operation: string) => string);
       };
 };
 
@@ -111,8 +113,7 @@ export const preset: Types.OutputPreset<ClientPresetConfig> = {
         '[client-preset] providing typescript-based `plugins` with `preset: "client" leads to duplicated generated types'
       );
     }
-
-    const isPersistedOperations = !!options.presetConfig?.persistedDocuments ?? false;
+    const isPersistedOperations = !!options.presetConfig?.persistedDocuments;
 
     const reexports: Array<string> = [];
 
@@ -126,11 +127,15 @@ export const preset: Types.OutputPreset<ClientPresetConfig> = {
       skipTypename: options.config.skipTypename,
       arrayInputCoercion: options.config.arrayInputCoercion,
       enumsAsTypes: options.config.enumsAsTypes,
+      enumsAsConst: options.config.enumsAsConst,
       futureProofEnums: options.config.futureProofEnums,
       dedupeFragments: options.config.dedupeFragments,
       nonOptionalTypename: options.config.nonOptionalTypename,
       avoidOptionals: options.config.avoidOptionals,
       documentMode: options.config.documentMode,
+      skipTypeNameForRoot: options.config.skipTypeNameForRoot,
+      onlyOperationTypes: options.config.onlyOperationTypes,
+      onlyEnumTypes: options.config.onlyEnumTypes,
     };
 
     const visitor = new ClientSideBaseVisitor(options.schemaAst!, [], options.config, options.config);
@@ -244,9 +249,11 @@ export const preset: Types.OutputPreset<ClientPresetConfig> = {
       fragmentMaskingFileGenerateConfig = {
         filename: `${options.baseOutputDir}fragment-masking${fragmentMaskingArtifactFileExtension}`,
         pluginMap: {
+          [`add`]: addPlugin,
           [`fragment-masking`]: fragmentMaskingPlugin,
         },
         plugins: [
+          { [`add`]: { content: `/* eslint-disable */` } },
           {
             [`fragment-masking`]: {},
           },

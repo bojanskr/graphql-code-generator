@@ -600,7 +600,15 @@ export class SelectionSetToObject<Config extends ParsedDocumentsConfig = ParsedD
 
       if (this._config.inlineFragmentTypes === 'combine' || this._config.inlineFragmentTypes === 'mask') {
         fragmentsSpreadUsages.push(selectionNode.typeName);
-        continue;
+
+        const isApolloUnmaskEnabled = this._config.customDirectives.apolloUnmask;
+
+        if (
+          !isApolloUnmaskEnabled ||
+          (isApolloUnmaskEnabled && !selectionNode.fragmentDirectives?.some(d => d.name.value === 'unmask'))
+        ) {
+          continue;
+        }
       }
 
       // Handle Fragment Spreads by generating inline types.
@@ -642,7 +650,9 @@ export class SelectionSetToObject<Config extends ParsedDocumentsConfig = ParsedD
       const isConditional = hasConditionalDirectives(field) || inlineFragmentConditional;
       const isOptional = options.unsetTypes;
       linkFields.push({
-        alias: field.alias ? this._processor.config.formatNamedField(field.alias.value, selectedFieldType) : undefined,
+        alias: field.alias
+          ? this._processor.config.formatNamedField(field.alias.value, selectedFieldType, isConditional, isOptional)
+          : undefined,
         name: this._processor.config.formatNamedField(field.name.value, selectedFieldType, isConditional, isOptional),
         type: realSelectedFieldType.name,
         selectionSet: this._processor.config.wrapTypeWithModifiers(
@@ -679,6 +689,7 @@ export class SelectionSetToObject<Config extends ParsedDocumentsConfig = ParsedD
         Array.from(primitiveAliasFields.values()).map(field => ({
           alias: field.alias.value,
           fieldName: field.name.value,
+          isConditional: hasConditionalDirectives(field),
         })),
         options.unsetTypes
       ),

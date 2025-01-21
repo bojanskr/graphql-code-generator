@@ -311,7 +311,7 @@ export namespace Types {
      */
     schema?: InstanceOrArray<Schema>;
     /**
-     * @description Configuration object containing key => value that will be passes to the plugins.
+     * @description Configuration object containing key => value that will be passed to the plugins.
      * Specifying configuration in this level of your configuration file will pass it to all plugins, in all outputs.
      *
      * The options may vary depends on what plugins you are using.
@@ -429,7 +429,7 @@ export namespace Types {
     /**
      * @type object
      * @additionalProperties true
-     * @description Configuration object containing key => value that will be passes to the plugins.
+     * @description Configuration object containing key => value that will be passed to the plugins.
      * Specifying configuration in this level of your configuration file will pass it to all plugins, in all outputs.
      *
      * The options may vary depends on what plugins you are using.
@@ -549,7 +549,12 @@ export namespace Types {
     noSilentErrors?: boolean;
   }
 
-  export type ComplexPluginOutput = { content: string; prepend?: string[]; append?: string[] };
+  export type ComplexPluginOutput<M = Record<string, unknown>> = {
+    content: string;
+    prepend?: string[];
+    append?: string[];
+    meta?: M;
+  };
   export type PluginOutput = string | ComplexPluginOutput;
   export type HookFunction = (...args: any[]) => void | Promise<void>;
   export type HookAlterFunction = (...args: any[]) => void | string | Promise<void | string>;
